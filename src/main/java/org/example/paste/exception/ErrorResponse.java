@@ -1,8 +1,6 @@
 package org.example.paste.exception;
 
 import lombok.Data;
-
-
 import java.time.LocalDateTime;
 
 @Data
