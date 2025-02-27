@@ -5,7 +5,6 @@ import org.example.paste.Model.Status;
 import org.example.paste.dto.PasteDtoRequest;
 import org.example.paste.dto.PasteDtoResponse;
 import org.example.paste.dto.PasteDtoResponseUrl;
-import org.example.paste.exception.ErrorResponse;
 import org.example.paste.exception.PasteNotFoundException;
 import org.example.paste.exception.PasteTimeLimitExceeded;
 import org.example.paste.service.PasteService;

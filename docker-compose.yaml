@@ -1,6 +1,22 @@
 networks:
   main:
 services:
+  paste:
+    build: .
+    restart: always
+    container_name: ${PASTE_CONTAINER_NAME}
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DB:   ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - ${PASTE_PORTS}
+    depends_on:
+      - PostgresDB
+    networks:
+      - main
   PostgresDB:
     image: postgres
     restart: always
