@@ -17,11 +17,7 @@ Backend приложения позволяет отправить запрос 
    git clone https://github.com/JustChelUser/Paste
    ```
 2. Создайте .env файл по образцу .env.example и укажите в нём конфигурационные данные
-3. Сформируйте jar архив используя Maven:
-   ```
-   mvn clean package
-   ```
-4. Сборка и запуск :
+3. Сборка и запуск :
     ```
    docker compose up -d
    ```
