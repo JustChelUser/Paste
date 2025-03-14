@@ -11,6 +11,8 @@ import org.example.paste.exception.PasteNotFoundException;
 import org.example.paste.exception.PasteTimeLimitExceeded;
 import org.example.paste.repository.PasteRepository;
 import org.example.paste.service.PasteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class PasteServiceImpl implements PasteService {
+
+    private static final Logger logger = LoggerFactory.getLogger(PasteServiceImpl.class);
 
     private final PasteRepository repository;
 
@@ -36,6 +40,7 @@ public class PasteServiceImpl implements PasteService {
         if (paste.getAccessTime().isBefore(now)) {
             throw new PasteTimeLimitExceeded("Time limit for past with hash: " + hash + " exceeded");
         }
+        logger.info("Paste was requested : hash = {}, status = {}, time = {}", paste.getHash(), paste.getStatus(), now);
         return new PasteDtoResponse(paste.getData(), paste.getStatus());
     }
 
@@ -43,17 +48,20 @@ public class PasteServiceImpl implements PasteService {
     public List<PasteDtoResponse> getPublicPastes() {
         LocalDateTime now = LocalDateTime.now();
         List<Paste> pastes = repository.findTop10ByStatusAndAccessTimeAfterOrderByIdDesc(Status.PUBLIC, now);
+        logger.info("Last 10 public pastes was requested at : time = {}", now);
         return pastes.stream().map(paste -> new PasteDtoResponse(paste.getData(), paste.getStatus())).toList();
     }
 
     @Override
     public PasteDtoResponseUrl createPaste(PasteDtoRequest pasteDtoRequest) {
+        LocalDateTime now = LocalDateTime.now();
         Paste paste = new Paste();
         paste.setData(pasteDtoRequest.getData());
         paste.setHash(NanoIdUtils.randomNanoId(NanoIdUtils.DEFAULT_NUMBER_GENERATOR, NanoIdUtils.DEFAULT_ALPHABET, 10));
         paste.setStatus(pasteDtoRequest.getStatus());
-        paste.setAccessTime(LocalDateTime.now().plusSeconds(pasteDtoRequest.getTimeToLiveSeconds()));
+        paste.setAccessTime(now.plusSeconds(pasteDtoRequest.getTimeToLiveSeconds()));
         repository.save(paste);
+        logger.info("Paste created : hash = {}, status = {}, time = {}", paste.getHash(), paste.getStatus(), now);
         return new PasteDtoResponseUrl(host + "/" + paste.getHash());
     }
 }

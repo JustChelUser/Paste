@@ -33,14 +33,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(PasteNotFoundException.class)
     public ResponseEntity<ErrorResponse> handlePasteNotFoundException(PasteNotFoundException ex) {
-        logger.warn("Paste not found : {}", ex.getMessage());
+        logger.warn(ex.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
     @ExceptionHandler(PasteTimeLimitExceeded.class)
     public ResponseEntity<ErrorResponse> handlePasteTimeLimitExceeded(PasteTimeLimitExceeded ex) {
-        logger.warn("Paste time limit exceeded : {}", ex.getMessage());
+        logger.warn(ex.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
         return ResponseEntity.badRequest().body(errorResponse);
     }
