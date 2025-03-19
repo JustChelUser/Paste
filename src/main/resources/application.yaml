@@ -3,7 +3,7 @@ spring:
     import: optional:file:.env [.properties]
   application:
     name: Paste
-  host: "http://paste.ru"
+  hostForUrl: "localhost:8080/paste"
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
     username: ${POSTGRES_USER}
@@ -26,3 +26,10 @@ logging:
       max-file-size: 10MB
       max-history: 10
       total-size-cap: 2GB
+  level:
+    org:
+      springframework:
+        security: off
+token:
+  signing:
+    key: ${SIGN_KEY}

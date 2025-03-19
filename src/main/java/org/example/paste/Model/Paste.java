@@ -20,4 +20,7 @@ public class Paste {
     @Enumerated(EnumType.STRING)
     private Status status;
     private LocalDateTime accessTime;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
