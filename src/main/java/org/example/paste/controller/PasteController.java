@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -62,8 +63,8 @@ public class PasteController {
 
     @GetMapping("/user/{id}")
     @PreAuthorize("isAuthenticated()")
-    public PasteDtoResponse getUserPaste(@PathVariable String id,
-                                         @AuthenticationPrincipal User user) {
+    public PasteDtoResponse getPaste(@PathVariable String id,
+                                     @AuthenticationPrincipal User user) {
         return pasteService.getPaste(user, id);
     }
 }
